@@ -1,0 +1,2 @@
+# artixinstall
+Installscript for artixlinux
