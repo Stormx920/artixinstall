@@ -2063,7 +2063,7 @@ if [ "${chroot}" = "1" ]; then
 else
 	echo "Init pacman, please wait..."
 	systemctl start pacman-init.service
-	pacman -Sy --needed arch-install-scripts dialog
+	pacman -Sy --needed artix-live-base artix-live-base-openrc dialog
 	dmesg |grep efi: > /dev/null
 	if [ "$?" == "1" ]; then
 		if [ "${eficomputer}" != "1" ]; then
