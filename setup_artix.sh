@@ -114,7 +114,7 @@ printf ${CYAN}"Enter the Hostname you want to use\n>"
 read hostname
 printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
 
-mount $pard_3 /mnt
+mount $part_3 /mnt
 mv deployartix-master /mnt/
 mv deployartix-master.zip /mnt/
 cd /mnt/deployartix-master
