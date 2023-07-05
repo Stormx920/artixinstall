@@ -106,6 +106,12 @@ done
 printf "enter a number for the kernel you want to use\n"
 printf "0 = regular\n1 = hardened\n2 = lts\n3 = zen\n>"
 read kernelselect
+printf "enter a number for the gpu vendor you have\n"
+printf "0 = nvidia\n1 = amd"
+read gpuselect
+printf "enter a number for the cpu vendor you have\n"
+printf "0 = amd\n 1 = intel"
+read cpuselect
 printf ${CYAN}"Enter the username for your NON ROOT user\n>"
 #There is a possibility this won't work since the handbook creates a user after rebooting and logging as root
 read username
@@ -133,15 +139,22 @@ case $kernelselect in
     ;;
 esac
 
-case $cpuselect in
+case $gpuselect in
     0)
-        CPU_TYPE="amd-ucode"
+        GPU_DRIVER="nvidia-dkms nvidia-util nvidia-settings"
         ;;
     1)
-        CPU_TYPE="intel-ucode"
+        GPU_DRIVER="mesa xf86-video-amdgpu vulkan-radeon"
+        ;;
+case $cpuselect in
+    0)
+        CPU_UCODE="amd-ucode"
+        ;;
+    1)
+        CPU_UCODE="intel-ucode"
         ;;
 esac
 
-basestrap /mnt $KERNEL_TYPE base base-devel openrc elogind-openrc linux-firmware $CPU_TYPE neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber helvum git
+basestrap /mnt $KERNEL_TYPE base base-devel openrc elogind-openrc linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
 
 artix-chroot /mnt ./post_chroot.sh
