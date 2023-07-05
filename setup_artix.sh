@@ -159,4 +159,6 @@ esac
 
 basestrap /mnt $KERNEL_TYPE base base-devel openrc elogind-openrc linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
 
+git clone https://github.com/stormx920/artixinstall /mnt
+
 artix-chroot /mnt ./post_chroot.sh
