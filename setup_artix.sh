@@ -115,9 +115,8 @@ read hostname
 printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
 
 mount $part_3 /mnt
-mv deployartix-master /mnt/
-mv deployartix-master.zip /mnt/
-cd /mnt/deployartix-master
+mv artixinstall /mnt/
+cd /mnt/artixinstall
 
 case $kernelselect in
   0)
