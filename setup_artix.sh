@@ -133,7 +133,7 @@ case $kernelselect in
     ;;
 esac
 
-case $cpuselect
+case $cpuselect in
     0)
         CPU_TYPE="amd-ucode"
         ;;
