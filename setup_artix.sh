@@ -107,10 +107,10 @@ printf "enter a number for the kernel you want to use\n"
 printf "0 = regular\n1 = hardened\n2 = lts\n3 = zen\n>"
 read kernelselect
 printf "enter a number for the gpu vendor you have\n"
-printf "0 = nvidia\n1 = amd"
+printf "0 = nvidia\n1 = amd\n"
 read gpuselect
 printf "enter a number for the cpu vendor you have\n"
-printf "0 = amd\n 1 = intel"
+printf "0 = amd\n1 = intel\n"
 read cpuselect
 printf ${CYAN}"Enter the username for your NON ROOT user\n>"
 #There is a possibility this won't work since the handbook creates a user after rebooting and logging as root
@@ -146,6 +146,8 @@ case $gpuselect in
     1)
         GPU_DRIVER="mesa xf86-video-amdgpu vulkan-radeon"
         ;;
+esac
+
 case $cpuselect in
     0)
         CPU_UCODE="amd-ucode"
