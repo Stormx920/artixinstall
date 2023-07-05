@@ -11,6 +11,9 @@ fdisk -l >> devices
 sed -e '\#Disk /dev/ram#,+5d' -i devices
 sed -e '\#Disk /dev/loop#,+5d' -i devices
 
+printf ${CYAN}"Installing parted and paru"
+pacman -S parted
+
 cat devices
 
 while true; do
@@ -100,4 +103,46 @@ while true; do
     fi
 done
 
-#artix-chroot /mnt ./post_chroot.sh
+printf "enter a number for the kernel you want to use\n"
+printf "0 = regular\n1 = hardened\n2 = lts\n3 = zen\n>"
+read kernelselect
+printf ${CYAN}"Enter the username for your NON ROOT user\n>"
+#There is a possibility this won't work since the handbook creates a user after rebooting and logging as root
+read username
+username="${username,,}"
+printf ${CYAN}"Enter the Hostname you want to use\n>"
+read hostname
+printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
+
+mount $pard_3 /mnt
+mv deployartix-master /mnt/
+mv deployartix-master.zip /mnt/
+cd /mnt/deployartix-master
+
+case $kernelselect in
+  0)
+    KERNEL_TYPE="linux linux-headers"
+    ;;
+  1)
+    KERNEL_TYPE="linux-hardened linux-hardened-headers"
+    ;;
+  2)
+    KERNEL_TYPE="linux-lts linux-lts-headers"
+    ;;
+  3)
+    KERNEL_TYPE="linux-zen linux-zen-headers"
+    ;;
+esac
+
+case $cpuselect
+    0)
+        CPU_TYPE="amd-ucode"
+        ;;
+    1)
+        CPU_TYPE="intel-ucode"
+        ;;
+esac
+
+basestrap /mnt $KERNEL_TYPE base base-devel openrc elogind-openrc linux-firmware $CPU_TYPE neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber helvum git
+
+artix-chroot /mnt ./post_chroot.sh
