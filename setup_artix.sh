@@ -100,4 +100,4 @@ while true; do
     fi
 done
 
-artix-chroot /mnt ./post_chroot.sh
+#artix-chroot /mnt ./post_chroot.sh
