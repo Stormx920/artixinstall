@@ -16,8 +16,6 @@ pacman -S parted
 
 cat devices
 
-install_packages="$KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER $EDITOR $AUDIO git"
-
 while true; do
     printf ${CYAN}"Enter the device name you want to install artix on (ex, sda for /dev/sda)\n>"
     read disk
@@ -137,15 +135,6 @@ mount $part_3 /mnt
 cp artixinstall /mnt/
 cd /mnt/artixinstall
 
-case $username in
-    erik)
-        INIT_SYSTEM="openrc elogind-openrc networkmanager-openrc"
-        KERNEL_TYPE="linux-zen linux-zen-headers"
-        GPU_DRIVER="nvidia-dkms nvidia-utils nvidia-settings"
-        CPU_UCODE="amd-ucode"
-        ;;
-esac
-
 case $initselect in
     0)
         INIT_SYSTEM="openrc elogind-openrc networkmanager-openrc"
@@ -205,22 +194,20 @@ esac
 
 case $editorselect in
     0)
-        EDITOR = "nano"
+        EDITOR="nano"
         ;;
     1)
-        EDITOR = "vim"
+        EDITOR="vim"
         ;;
     2)
-        EDITOR = "neovim"
+        EDITOR="neovim"
         ;;
     3)
-        EDITOR = "emacs"
+        EDITOR="emacs"
         ;;
 esac
 
-basestrap /mnt $install
-
-#basestrap /mnt $KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
+basestrap /mnt $KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER $EDITOR $AUDIO git
 
 git clone https://github.com/stormx920/artixinstall /mnt/
 
