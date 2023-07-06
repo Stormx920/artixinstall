@@ -103,13 +103,16 @@ while true; do
     fi
 done
 
+printf "enter a number for the init you want to use\n"
+printf "0 = openrc\n1 = runit\n2 = dinit\n3 = s6\n>"
+read initselect
 printf "enter a number for the kernel you want to use\n"
 printf "0 = regular\n1 = hardened\n2 = lts\n3 = zen\n>"
 read kernelselect
-printf "enter a number for the gpu vendor you have\n"
+printf "enter a number for the gpu vendor you have\n>"
 printf "0 = nvidia\n1 = amd\n"
 read gpuselect
-printf "enter a number for the cpu vendor you have\n"
+printf "enter a number for the cpu vendor you have\n>"
 printf "0 = amd\n1 = intel\n"
 read cpuselect
 printf ${CYAN}"Enter the username for your NON ROOT user\n>"
@@ -118,25 +121,42 @@ read username
 username="${username,,}"
 printf ${CYAN}"Enter the Hostname you want to use\n>"
 read hostname
+printf ${CYAN}"Enter packages you want to install\n>"
+read packages
 printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
 
 mount $part_3 /mnt
 mv artixinstall /mnt/
 cd /mnt/artixinstall
 
+case $initselect in
+    0)
+        INIT_SYSTEM="openrc elogind-openrc networkmanager-openrc"
+        ;;
+    1)
+        INIT_SYSTEM="runit elogind-runit networkmanager-runit"
+        ;;
+    2)
+        INIT_SYSTEM="dinit elogind-dinit networkmanager-dinit"
+        ;;
+    3)
+        INIT_SYSTEM="s6-base elogind-base networkmanager-s6"
+        ;;
+esac
+
 case $kernelselect in
-  0)
-    KERNEL_TYPE="linux linux-headers"
-    ;;
-  1)
-    KERNEL_TYPE="linux-hardened linux-hardened-headers"
-    ;;
-  2)
-    KERNEL_TYPE="linux-lts linux-lts-headers"
-    ;;
-  3)
-    KERNEL_TYPE="linux-zen linux-zen-headers"
-    ;;
+    0)
+        KERNEL_TYPE="linux linux-headers"
+        ;;
+    1)
+        KERNEL_TYPE="linux-hardened linux-hardened-headers"
+        ;;
+    2)
+        KERNEL_TYPE="linux-lts linux-lts-headers"
+        ;;
+    3)
+        KERNEL_TYPE="linux-zen linux-zen-headers"
+        ;;
 esac
 
 case $gpuselect in
@@ -157,8 +177,10 @@ case $cpuselect in
         ;;
 esac
 
-basestrap /mnt $KERNEL_TYPE base base-devel openrc elogind-openrc linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
+basestrap /mnt $KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
 
-git clone https://github.com/stormx920/artixinstall /mnt
+git clone https://github.com/stormx920/artixinstall /mnt/
+
+echo net.ipv4.tcp_mtu_probing=1 | tee /mnt/etc/sysctl.d/custom-mtu-probing.conf
 
 artix-chroot /mnt ./post_chroot.sh
