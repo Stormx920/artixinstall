@@ -16,6 +16,8 @@ pacman -S parted
 
 cat devices
 
+install_packages="$KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER $EDITOR $AUDIO git"
+
 while true; do
     printf ${CYAN}"Enter the device name you want to install artix on (ex, sda for /dev/sda)\n>"
     read disk
@@ -115,6 +117,12 @@ read gpuselect
 printf "enter a number for the cpu vendor you have\n>"
 printf "0 = amd\n1 = intel\n"
 read cpuselect
+printf "enter a number for the audio server you want to use\n"
+printf "0 = pulseaudio\n1 = pipewire\n>"
+read audioserver
+printf "enter a number for the text editor you want to use\n"
+printf "0 = nano\n1 = vim\n2 = neovim\n3 = emacs\n>"
+read editorselect
 printf ${CYAN}"Enter the username for your NON ROOT user\n>"
 #There is a possibility this won't work since the handbook creates a user after rebooting and logging as root
 read username
@@ -128,6 +136,13 @@ printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
 mount $part_3 /mnt
 mv artixinstall /mnt/
 cd /mnt/artixinstall
+
+case $username in
+    erik)
+        INIT_SYSTEM="openrc elogind-openrc networkmanager-openrc"
+        KERNEL_TYPE="linux-zen linux-zen-headers"
+        GPU_DRIVER="nvidia-dkms nvidia-utils nvidia-settings"
+        CPU_UCODE="amd-ucode"
 
 case $initselect in
     0)
@@ -161,7 +176,7 @@ esac
 
 case $gpuselect in
     0)
-        GPU_DRIVER="nvidia-dkms nvidia-util nvidia-settings"
+        GPU_DRIVER="nvidia-dkms nvidia-utils nvidia-settings"
         ;;
     1)
         GPU_DRIVER="mesa xf86-video-amdgpu vulkan-radeon"
@@ -177,7 +192,33 @@ case $cpuselect in
         ;;
 esac
 
-basestrap /mnt $KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
+case $audioserver in
+    0)
+        AUDIO="pulseaudio"
+        ;;
+    1)
+        AUDIO="pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber"
+        ;;
+esac
+
+case $editorselect in
+    0)
+        EDITOR = "nano"
+        ;;
+    1)
+        EDITOR = "vim"
+        ;;
+    2)
+        EDITOR = "neovim"
+        ;;
+    3)
+        EDITOR = "emacs"
+        ;;
+esac
+
+basestrap /mnt $install
+
+#basestrap /mnt $KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER neovim pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber git
 
 git clone https://github.com/stormx920/artixinstall /mnt/
 
