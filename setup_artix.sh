@@ -134,7 +134,7 @@ read packages
 printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
 
 mount $part_3 /mnt
-mv artixinstall /mnt/
+cp artixinstall /mnt/
 cd /mnt/artixinstall
 
 case $username in
@@ -143,6 +143,8 @@ case $username in
         KERNEL_TYPE="linux-zen linux-zen-headers"
         GPU_DRIVER="nvidia-dkms nvidia-utils nvidia-settings"
         CPU_UCODE="amd-ucode"
+        ;;
+esac
 
 case $initselect in
     0)
