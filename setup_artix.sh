@@ -121,12 +121,6 @@ read audioserver
 printf "enter a number for the text editor you want to use\n"
 printf "0 = nano\n1 = vim\n2 = neovim\n3 = emacs\n>"
 read editorselect
-printf ${CYAN}"Enter the username for your NON ROOT user\n>"
-#There is a possibility this won't work since the handbook creates a user after rebooting and logging as root
-read username
-username="${username,,}"
-printf ${CYAN}"Enter the Hostname you want to use\n>"
-read hostname
 printf ${CYAN}"Enter packages you want to install\n>"
 read packages
 printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
