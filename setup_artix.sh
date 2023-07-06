@@ -132,6 +132,8 @@ read packages
 printf ${LIGHTGREEN}"Beginning installation, this will take a while\n"
 
 mount $part_3 /mnt
+mount --mkdir $part_1 /mnt/boot
+swapon $part_2
 cp artixinstall /mnt/
 cd /mnt/artixinstall
 
@@ -207,9 +209,9 @@ case $editorselect in
         ;;
 esac
 
-basestrap /mnt $KERNEL_TYPE base base-devel $INIT_SYSTEM linux-firmware $CPU_UCODE $GPU_DRIVER $EDITOR $AUDIO git
+basestrap /mnt $INIT_SYSTEM $KERNEL_TYPE base base-devel linux-firmware $CPU_UCODE $GPU_DRIVER $EDITOR $AUDIO git
 
-git clone https://github.com/stormx920/artixinstall /mnt/
+git clone https://github.com/stormx920/artixinstall /mnt/artixinstall
 
 echo net.ipv4.tcp_mtu_probing=1 | tee /mnt/etc/sysctl.d/custom-mtu-probing.conf
 
