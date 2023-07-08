@@ -142,7 +142,7 @@ case $initselect in
         INIT_SYSTEM="dinit elogind-dinit networkmanager-dinit"
         ;;
     3)
-        INIT_SYSTEM="s6-base elogind-base networkmanager-s6"
+        INIT_SYSTEM="s6-base elogind-s6 networkmanager-s6"
         ;;
 esac
 
