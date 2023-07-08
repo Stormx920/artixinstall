@@ -109,8 +109,8 @@ read initselect
 printf "enter a number for the kernel you want to use\n"
 printf "0 = regular\n1 = hardened\n2 = lts\n3 = zen\n>"
 read kernelselect
-printf "enter a number for the gpu vendor you have\n>"
-printf "0 = nvidia\n1 = amd\n"
+printf "enter a number for the gpu vendor you have\n"
+printf "0 = nvidia\n1 = amd\n2 = intel\n>"
 read gpuselect
 printf "enter a number for the cpu vendor you have\n>"
 printf "0 = amd\n1 = intel\n"
@@ -168,7 +168,10 @@ case $gpuselect in
     1)
         GPU_DRIVER="mesa xf86-video-amdgpu vulkan-radeon"
         ;;
-esac
+    2)
+        GPU_DRIVER="mesa xf86-video-intel vulkan-intel"
+
+    esac
 
 case $cpuselect in
     0)
