@@ -210,6 +210,8 @@ basestrap /mnt $INIT_SYSTEM $KERNEL_TYPE base base-devel linux-firmware $CPU_UCO
 
 git clone https://github.com/stormx920/artixinstall /mnt/artixinstall
 
+mkdir -p /mnt/etc/sysctl.d/
+
 echo net.ipv4.tcp_mtu_probing=1 | tee /mnt/etc/sysctl.d/custom-mtu-probing.conf
 
 artix-chroot /mnt ./post_chroot.sh
