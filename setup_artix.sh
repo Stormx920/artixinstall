@@ -214,4 +214,6 @@ mkdir -p /mnt/etc/sysctl.d/
 
 echo net.ipv4.tcp_mtu_probing=1 | tee /mnt/etc/sysctl.d/custom-mtu-probing.conf
 
+fstabgen -U /mnt >> /mnt/etf/fstab
+
 artix-chroot /mnt ./post_chroot.sh
