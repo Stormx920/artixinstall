@@ -28,10 +28,10 @@ while true; do
         if [ "$auto_prov_ans" = "y" ]; then
             wipefs -a $disk_chk
             parted -a optimal $disk_chk --script mklabel gpt
-            parted $disk_chk --script mkpart primary 1MiB 257MiB
+            parted $disk_chk --script mkpart primary 1MiB 513MiB
             parted $disk_chk --script name 1 grub
             parted $disk_chk --script set 1 bios_grub on
-            parted $disk_chk --script mkpart primary 257MiB 4353MiB
+            parted $disk_chk --script mkpart primary 513MiB 4599MiB
             parted $disk_chk --script name 2 swap
             parted $disk_chk --script -- mkpart primary 4353MiB -1
             parted $disk_chk --script name 3 artix
